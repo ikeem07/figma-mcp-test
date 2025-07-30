@@ -17,7 +17,8 @@ jobs:
           AZDO_PAT: ${{ secrets.AZDO_PAT }}
         run: |
           echo "Creating task in Azure DevOps..."
-          curl -X POST "$AZDO_ORG_URL/$AZDO_PROJECT/_apis/wit/workitems/\$Issue?api-version=7.0" \
+          curl --fail-with-body -v \
+            -X POST "$AZDO_ORG_URL/$AZDO_PROJECT/_apis/wit/workitems/\$Issue?api-version=7.0" \
             -H "Content-Type: application/json-patch+json" \
             -H "Authorization: Basic $(echo -n ":$AZDO_PAT" | base64)" \
             -d @- <<EOF
