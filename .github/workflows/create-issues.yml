@@ -13,7 +13,7 @@ jobs:
       - name: Create Azure DevOps Tasks
         env:
           AZDO_ORG_URL: https://dev.azure.com/deuxidioma
-          AZDO_PROJECT: "Technical Operations Calendar"
+          AZDO_PROJECT: "Technical%20Operations%20Calendar"
           AZDO_PAT: ${{ secrets.AZDO_PAT }}
         run: |
           echo "Creating task in Azure DevOps..."
