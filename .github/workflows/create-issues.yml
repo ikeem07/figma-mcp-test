@@ -20,17 +20,20 @@ jobs:
           curl -X POST "$AZDO_ORG_URL/$AZDO_PROJECT/_apis/wit/workitems/\$Issue?api-version=7.0" \
             -H "Content-Type: application/json-patch+json" \
             -H "Authorization: Basic $(echo -n ":$AZDO_PAT" | base64)" \
-            -d @- <<EOF
-          [
-            {
-              "op": "add",
-              "path": "/fields/System.Title",
-              "value": "Automated Task from GitHub Workflow"
-            },
-            {
-              "op": "add",
-              "path": "/fields/System.Description",
-              "value": "This task was created based on GitHub criteria."
-            }
-          ]
-          EOF
+            -d '[
+                  {
+                    "op": "add",
+                    "path": "/fields/System.Title",
+                    "value": "Automated Task from GitHub Workflow"
+                  },
+                  {
+                    "op": "add",
+                    "path": "/fields/System.State",
+                    "value": "New"
+                  },
+                  {
+                    "op": "add",
+                    "path": "/fields/System.Description",
+                    "value": "This task was created automatically by a GitHub Actions workflow."
+                  }
+                ]'
