@@ -1,0 +1,36 @@
+name: Create Azure DevOps Tasks
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create-tasks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Create Azure DevOps Tasks
+        env:
+          AZDO_ORG_URL: https://dev.azure.com/deuxidioma
+          AZDO_PROJECT: "Technical Operations Calendar"
+          AZDO_PAT: ${{ secrets.AZDO_PAT }}
+        run: |
+          echo "Creating task in Azure DevOps..."
+          curl -X POST "$AZDO_ORG_URL/$AZDO_PROJECT/_apis/wit/workitems/\$Issue?api-version=7.0" \
+            -H "Content-Type: application/json-patch+json" \
+            -H "Authorization: Basic $(echo -n ":$AZDO_PAT" | base64)" \
+            -d @- <<EOF
+          [
+            {
+              "op": "add",
+              "path": "/fields/System.Title",
+              "value": "Automated Task from GitHub Workflow"
+            },
+            {
+              "op": "add",
+              "path": "/fields/System.Description",
+              "value": "This task was created based on GitHub criteria."
+            }
+          ]
+          EOF
